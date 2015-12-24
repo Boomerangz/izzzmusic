@@ -61,6 +61,8 @@ class CustomerAudioFileForm(ModelForm):
 def income_message(request):
         if request.method=='POST':
             print "POST"
+            message = request.POST['message']
+            print message
         else:
             print "ELSE"
         return "GOT IT"

@@ -1,7 +1,8 @@
+import json
 from audiofield.models import AudioFile
 from audiofield.widgets import CustomerAudioFileWidget
 from django.forms import ModelForm
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import redirect, render_to_response
 from django.template import RequestContext
 from django.views.generic import ListView, TemplateView, RedirectView
@@ -57,12 +58,18 @@ class CustomerAudioFileForm(ModelForm):
         fields = ['audio_file']
 
 
-
+# {"update_id":202480832,
+# "message":{"message_id":8,"from":{"id":1398413,"first_name":"Igor","last_name":"Zygin"},"chat":{"id":1398413,"first_name":"Igor","last_name":"Zygin","type":"private"},"date":1450995712,"text":"asd"}}
 def income_message(request):
         if request.method=='POST':
             print "POST"
-            message = request.POST['message']
-            print message
+            print request.body
+            body = json.loads(request.body)
+            chat_id = body["chat"]["id"]
+            text = body["text"]
+
+            response = {"chat_id":chat_id, "text":text, "method": "sendMessage"}
+            return JsonResponse(response)
         else:
             print "ELSE"
-        return "GOT IT"
+        return JsonResponse({'method': 'sendMessage', 'text':'GOT IT'})

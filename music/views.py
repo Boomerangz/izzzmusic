@@ -7,6 +7,7 @@ from django.shortcuts import redirect, render_to_response
 from django.template import RequestContext
 from django.views.generic import ListView, TemplateView, RedirectView
 from music.models import Track
+from mymusic import settings
 
 __author__ = 'igorzygin'
 
@@ -67,8 +68,13 @@ def income_message(request):
             body = json.loads(request.body)
             chat_id = body["message"]["chat"]["id"]
             text = body["message"]["text"]
-
+            audio = {}
             response = {"chat_id":chat_id, "text":text, "method": "sendMessage"}
+
+            filename='/home/ubuntu/izzzmusic/media/music/audio-file-PEDFY-8170657566.mp3'
+            import requests
+            r = requests.post('https://api.telegram.org/bot%s/sendAudio'%settings.BOT_TOKEN, files={'audio': open(filename, 'rb')}, data={"chat_id":chat_id})
+
             return JsonResponse(response)
         else:
             print "ELSE"

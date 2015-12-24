@@ -130,7 +130,7 @@ S3_BUCKET_NAME = 'izzmusic1'
 
 BOT_TOKEN = '176784464:AAERe2JaWKTgqi8W4UVKtTBQWjOeoGY4G6Y'
 URL = "https://api.telegram.org/bot%s/" % BOT_TOKEN
-MyURL = "http://ec2-52-26-72-148.us-west-2.compute.amazonaws.com/"
+MyURL = "https://izzzymusic.xyz/"
 import requests
 r = requests.get(URL + "setWebhook?url=%s" % MyURL)
 if r.status_code != 200:

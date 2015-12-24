@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
-from music.views import MusicView, MusicUploadView, add_audio
+from music.views import MusicView, MusicUploadView, add_audio, income_message
 
 from django.conf.urls.static import static
 from mymusic import settings
@@ -12,7 +12,9 @@ urlpatterns = patterns('',
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'^upload/', add_audio),
+    url(r'^message/', income_message),
     url(r'', MusicView.as_view()),
+
 
 
 

@@ -55,3 +55,12 @@ class CustomerAudioFileForm(ModelForm):
     class Meta:
         model = Track
         fields = ['audio_file']
+
+
+
+def income_message(request):
+        if request.method=='POST':
+            print "POST"
+        else:
+            print "ELSE"
+        return "GOT IT"

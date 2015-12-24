@@ -124,10 +124,15 @@ FREQ_TYPE_VALUE = 8000
 # 0-Keep original, 1-Convert to MP3, 2-Convert to WAV, 3-Convert to OGG
 CONVERT_TYPE_VALUE = 0
 
-
-
-S3_ACCESS_KEY = 'AKIAJGXZ2FRDRQHCDFIA'
-
-S3_SECRET_KEY = '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'
+from s3_settings import *
 
 S3_BUCKET_NAME = 'izzmusic1'
+
+BOT_TOKEN = '176784464:AAERe2JaWKTgqi8W4UVKtTBQWjOeoGY4G6Y'
+URL = "https://api.telegram.org/bot%s/" % BOT_TOKEN
+MyURL = "http://ec2-52-26-72-148.us-west-2.compute.amazonaws.com/"
+import requests
+r = requests.get(URL + "setWebhook?url=%s" % MyURL)
+if r.status_code != 200:
+    print "Can't set hook: %s. Quit." % r.text
+    exit(1)

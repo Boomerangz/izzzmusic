@@ -11,8 +11,8 @@ urlpatterns = patterns('',
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^music/upload', add_audio),
-    url(r'^music/', MusicView.as_view()),
+    url(r'^upload/', add_audio),
+    url(r'', MusicView.as_view()),
 
 
 

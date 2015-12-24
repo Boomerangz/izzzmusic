@@ -38,7 +38,7 @@ def add_audio(request):
         if form.is_valid():
             obj = form.save(commit=False)
             obj.save()
-            return HttpResponseRedirect('/music/')
+            return HttpResponseRedirect('/')
 
         # To retain frontend widget, if form.is_valid() == False
         form.fields['audio_file'].widget = CustomerAudioFileWidget()

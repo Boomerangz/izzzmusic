@@ -65,8 +65,8 @@ def income_message(request):
             print "POST"
             print request.body
             body = json.loads(request.body)
-            chat_id = body["chat"]["id"]
-            text = body["text"]
+            chat_id = body["message"]["chat"]["id"]
+            text = body["message"]["text"]
 
             response = {"chat_id":chat_id, "text":text, "method": "sendMessage"}
             return JsonResponse(response)

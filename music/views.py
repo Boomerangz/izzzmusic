@@ -82,7 +82,7 @@ def id_list(chat_id, id_list):
             testfile = urllib.URLopener()
             testfile.retrieve(track.link, TEMP_FILE_NAME)
             filename=TEMP_FILE_NAME
-            r = requests.post('https://api.telegram.org/bot%s/sendAudio'%settings.BOT_TOKEN, files={'audio': open(filename, 'rb')}, data={"duration":300,"chat_id":chat_id, 'performer':track.artist, 'title':track.title}, headers=headers)
+            r = requests.post('https://api.telegram.org/bot%s/sendAudio'%settings.BOT_TOKEN, files={'audio': open(filename, 'rb')}, data={"duration":300,"chat_id":chat_id, 'performer':track.artist, 'title':track.title})
             print r.content
             r_js = json.loads(r.content)
             f_id = r_js["result"]["audio"]["file_id"]
@@ -90,7 +90,7 @@ def id_list(chat_id, id_list):
             track.save()
             os.remove(filename)
         else:
-            r = requests.post('https://api.telegram.org/bot%s/sendAudio'%settings.BOT_TOKEN, data={"duration":300,"chat_id":chat_id, 'performer':track.artist, 'title':track.title, 'audio':track.telegram_id}, headers=headers)
+            r = requests.post('https://api.telegram.org/bot%s/sendAudio'%settings.BOT_TOKEN, data={"duration":300,"chat_id":chat_id, 'performer':track.artist, 'title':track.title, 'audio':track.telegram_id})
             print r.content
 
 
@@ -106,13 +106,13 @@ def income_message(request):
             response = {}
             try:
                 text = body["message"]["text"]
-		print text
+                print text
                 text_list = text.split(" ")
-		print text_list
+                print text_list
                 if text_list[0][0]=="/":
-		    print 'command'
+                    print 'command'
                     if text_list[0]=="/id":
-			print "/id"
+                        print "/id"
                         id_list(chat_id, text_list[1:])
                 else:
                     plain_text(chat_id, text)

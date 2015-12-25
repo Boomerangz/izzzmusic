@@ -75,14 +75,15 @@ def income_message(request):
                 track=Track.objects.get(pk=id)
                 import requests
                 headers = {}
-                if track.telegram_id is None or track.telegram_id = "":
+                if track.telegram_id is None or track.telegram_id == "":
                     import urllib
                     testfile = urllib.URLopener()
                     testfile.retrieve(track.link, "file.mp3")
                     filename="file.mp3"
                     r = requests.post('https://api.telegram.org/bot%s/sendAudio'%settings.BOT_TOKEN, files={'audio': open(filename, 'rb')}, data={"duration":300,"chat_id":chat_id, 'performer':track.artist, 'title':track.title}, headers=headers)
-                    r_js = json.loads(r.content)
-                    f_id = r_js["audio"]["file_id"]
+                    print r.content
+		    r_js = json.loads(r.content)
+                    f_id = r_js["result"]["audio"]["file_id"]
                     track.telegram_id = f_id
                     track.save()
                     os.delete("file.mp3")

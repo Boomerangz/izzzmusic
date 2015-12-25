@@ -73,9 +73,11 @@ def income_message(request):
 
             filename='/home/ubuntu/izzzmusic/media/music/audio-file-PEDFY-8170657566.mp3'
             import requests
-            headers = {'mime-type': 'audio/mpeg'}
-            r = requests.post('https://api.telegram.org/bot%s/sendAudio'%settings.BOT_TOKEN, files={'audio': open(filename, 'rb')}, data={"chat_id":chat_id, 'title':'Fear'})
-
+            headers = {}
+            r = requests.post('https://api.telegram.org/bot%s/sendAudio'%settings.BOT_TOKEN, files={'audio': open(filename, 'rb')}, data={"duration":300,"chat_id":chat_id, 'performer':'Fear', 'title':'asdasd'}, headers=headers)
+	    print 'https://api.telegram.org/bot%s/sendAudio'%settings.BOT_TOKEN	    
+	    #r = requests.post('https://api.telegram.org/bot%s/sendAudio'%settings.BOT_TOKEN, data={"chat_id":chat_id, 'performer':'Fear', 'title':'asdasd', 'duration':48,'audio':'BQADAgADDwADUISJCsJRBXH_23rUAg'},headers=headers)
+	    print str(r.content)
             return JsonResponse(response)
         else:
             print "ELSE"

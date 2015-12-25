@@ -118,7 +118,8 @@ def income_message(request):
                         id_list(chat_id, text_list[1:])
                 else:
                     plain_text(chat_id, text)
-            except:
+            except Exception as e:
+                print e
                 pass
             return JsonResponse(response)
         else:

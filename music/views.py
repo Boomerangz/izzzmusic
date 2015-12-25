@@ -71,7 +71,7 @@ def plain_text(chat_id, text_list):
     for text in text_list:
         tracks = tracks.filter(Q(artist__contains=text,album__contains=text, title__contains=text))
     track_strs = ["%d %s %s"%(t.id, t.artist,t.title) for t in tracks]
-    tracks_string = track_strs.join("\n")
+    tracks_string = "\n".join(track_strs)
     r = requests.post('https://api.telegram.org/bot%s/sendMessage'%settings.BOT_TOKEN, data={"chat_id":chat_id, 'text':tracks_string})
     print r
 

@@ -21,6 +21,7 @@ class Track(models.Model):
     audio_file = AudioField(upload_to='music', blank=True,
                             ext_whitelist=(".mp3", ".wav", ".ogg"),
                             help_text=("Allowed type - .mp3, .wav, .ogg"))
+    telegram_id = models.CharField(max_length=255, default="", blank=True)
 
     # Add this method to your model
     def audio_file_player(self):

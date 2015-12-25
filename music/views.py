@@ -68,21 +68,27 @@ def income_message(request):
             print request.body
             body = json.loads(request.body)
             chat_id = body["message"]["chat"]["id"]
-            text = body["message"]["text"]
             response = {}
             try:
+                text = body["message"]["text"]
                 id = int(text)
                 track=Track.objects.get(pk=id)
-
-                import urllib
-                testfile = urllib.URLopener()
-                testfile.retrieve(track.link, "file.mp3")
-                filename="file.mp3"
                 import requests
                 headers = {}
-                r = requests.post('https://api.telegram.org/bot%s/sendAudio'%settings.BOT_TOKEN, files={'audio': open(filename, 'rb')}, data={"duration":300,"chat_id":chat_id, 'performer':track.artist, 'title':track.title}, headers=headers)
-                os.delete("file.mp3")
-                print r
+                if track.telegram_id is None or track.telegram_id = "":
+                    import urllib
+                    testfile = urllib.URLopener()
+                    testfile.retrieve(track.link, "file.mp3")
+                    filename="file.mp3"
+                    r = requests.post('https://api.telegram.org/bot%s/sendAudio'%settings.BOT_TOKEN, files={'audio': open(filename, 'rb')}, data={"duration":300,"chat_id":chat_id, 'performer':track.artist, 'title':track.title}, headers=headers)
+                    r_js = json.loads(r.content)
+                    f_id = r_js["audio"]["file_id"]
+                    track.telegram_id = f_id
+                    track.save()
+                    os.delete("file.mp3")
+                else:
+                    r = requests.post('https://api.telegram.org/bot%s/sendAudio'%settings.BOT_TOKEN, data={"duration":300,"chat_id":chat_id, 'performer':track.artist, 'title':track.title, 'audio':track.telegram_id}, headers=headers)
+                print r.content
             except:
                 pass
             return JsonResponse(response)

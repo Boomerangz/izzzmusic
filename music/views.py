@@ -1,4 +1,5 @@
 import json
+import os
 from audiofield.models import AudioFile
 from audiofield.widgets import CustomerAudioFileWidget
 from django.forms import ModelForm
@@ -72,10 +73,15 @@ def income_message(request):
             try:
                 id = int(text)
                 track=Track.objects.get(pk=id)
-                filename=track.audio_file.path
+
+                import urllib
+                testfile = urllib.URLopener()
+                testfile.retrieve(track.link, "file.mp3")
+                filename="file.mp3"
                 import requests
                 headers = {}
                 r = requests.post('https://api.telegram.org/bot%s/sendAudio'%settings.BOT_TOKEN, files={'audio': open(filename, 'rb')}, data={"duration":300,"chat_id":chat_id, 'performer':track.artist, 'title':track.title}, headers=headers)
+                os.delete("file.mp3")
                 print r
             except:
                 pass

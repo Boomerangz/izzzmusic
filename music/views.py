@@ -73,7 +73,7 @@ def plain_text(chat_id, text_list):
     track_strs = ["%d %s %s"%(t.id, t.artist,t.title) for t in tracks]
     tracks_string = "\n".join(track_strs)
     r = requests.post('https://api.telegram.org/bot%s/sendMessage'%settings.BOT_TOKEN, data={"chat_id":chat_id, 'text':tracks_string})
-    print r
+    print r.body
 
 
 def id_list(chat_id, id_list):

@@ -89,7 +89,7 @@ def id_list(chat_id, id_list):
             track.telegram_id = f_id
             track.save()
             os.remove(filename)
-         else:
+        else:
             r = requests.post('https://api.telegram.org/bot%s/sendAudio'%settings.BOT_TOKEN, data={"duration":300,"chat_id":chat_id, 'performer':track.artist, 'title':track.title, 'audio':track.telegram_id}, headers=headers)
             print r.content
 
@@ -106,9 +106,13 @@ def income_message(request):
             response = {}
             try:
                 text = body["message"]["text"]
+		print text
                 text_list = text.split(" ")
+		print text_list
                 if text_list[0][0]=="/":
+		    print 'command'
                     if text_list[0]=="/id":
+			print "/id"
                         id_list(chat_id, text_list[1:])
                 else:
                     plain_text(chat_id, text)

@@ -7,7 +7,7 @@
 <body>
 <form method="post" action="" enctype="multipart/form-data">
     {% csrf_token %}
-    {{ audio_form.as_p }}
+    <input type="file" accept="audio/mpeg" name="audio">
     <input type="submit" value="GOGO">
 </form>
 </body>

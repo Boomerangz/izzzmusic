@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
-from music.views import MusicView, MusicUploadView, add_audio, income_message
+from music.views import MusicView, add_audio, income_message
 
 from django.conf.urls.static import static
 from mymusic import settings

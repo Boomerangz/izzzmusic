@@ -1,9 +1,7 @@
 import json
 import os
-from audiofield.models import AudioFile
-from audiofield.widgets import CustomerAudioFileWidget
+import uuid
 from django.db.models import Q
-from django.forms import ModelForm
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import redirect, render_to_response
 from django.template import RequestContext
@@ -11,11 +9,14 @@ from django.views.generic import ListView, TemplateView, RedirectView
 import requests
 from music.models import Track
 from mymusic import settings
+import eyed3
 
 __author__ = 'igorzygin'
 
 
-TEMP_FILE_NAME = 'file.mp3'
+def temp_file_name():
+    path = '/tmp/%s.mp3' % uuid.uuid1()
+    return path
 
 
 class MusicView(ListView):
@@ -23,45 +24,56 @@ class MusicView(ListView):
     template_name = 'music_list2.html'
 
 
-class MusicUploadView(TemplateView):
-    template_name = 'music_upload.html'
+def handle_uploaded_file(f, dest_path):
+    with open(dest_path, 'wb+') as destination:
+        for chunk in f.chunks():
+            destination.write(chunk)
 
-    def post(self, request):
-        form = CustomerAudioFileForm(request.POST, request.FILES)
-        if form.is_valid():
-            obj = form.save(commit=False)
-            obj.save()
-        return redirect('/music/')
+def upload_file(path):
+    import boto
+    conn = boto.connect_s3(settings.S3_ACCESS_KEY,
+    settings.S3_SECRET_KEY)
+    import boto.s3
+    bucket = conn.create_bucket(settings.S3_BUCKET_NAME,
+        location=boto.s3.connection.Location.DEFAULT)
+    name = path.split('/')[-1]
+    testfile = path
+    print 'Uploading %s to Amazon S3 bucket %s' % \
+       (testfile, settings.S3_BUCKET_NAME)
 
+    import sys
+    def percent_cb(complete, total):
+        sys.stdout.write('.')
+        sys.stdout.flush()
 
+    from boto.s3.key import Key
+    k = Key(bucket)
+    k.key = name
+    k.set_contents_from_filename(testfile,
+        cb=percent_cb, num_cb=10)
+    k.set_acl("public-read")
+    link = 'https://s3.amazonaws.com/' + settings.S3_BUCKET_NAME + '/' + name
+    return link
 
 def add_audio(request):
     template = 'music_upload.html'
-    form = CustomerAudioFileForm()
-
-    # Add audio
     if request.method == 'POST':
-        form = CustomerAudioFileForm(request.POST, request.FILES)
-        if form.is_valid():
-            obj = form.save(commit=False)
-            obj.save()
+        if 'audio' in request.FILES:
+            path = temp_file_name()
+            handle_uploaded_file(request.FILES['audio'], path)
+            audiofile = eyed3.load(path)
+            artist=audiofile.tag.artist
+            album=audiofile.tag.album
+            title=audiofile.tag.title
+            duration=audiofile.info.time_secs
+            link=upload_file(path)
+            os.remove(path)
+            t=Track.objects.create(artist=artist,album=album,title=title,duration=duration,link=link)
+            t.save()
             return HttpResponseRedirect('/')
-
-        # To retain frontend widget, if form.is_valid() == False
-        form.fields['audio_file'].widget = CustomerAudioFileWidget()
-
-    data = {
-       'audio_form': form,
-    }
-
+    data = {}
     return render_to_response(template, data,
            context_instance=RequestContext(request))
-
-
-class CustomerAudioFileForm(ModelForm):
-    class Meta:
-        model = Track
-        fields = ['audio_file']
 
 
 
@@ -82,8 +94,9 @@ def id_list(chat_id, id_list):
         if track.telegram_id is None or track.telegram_id == "":
             import urllib
             testfile = urllib.URLopener()
-            testfile.retrieve(track.link, TEMP_FILE_NAME)
-            filename=TEMP_FILE_NAME
+            path = temp_file_name()
+            testfile.retrieve(track.link, path)
+            filename=path
             r = requests.post('https://api.telegram.org/bot%s/sendAudio'%settings.BOT_TOKEN, files={'audio': open(filename, 'rb')}, data={"duration":300,"chat_id":chat_id, 'performer':track.artist, 'title':track.title})
             print r.content
             r_js = json.loads(r.content)
@@ -92,7 +105,7 @@ def id_list(chat_id, id_list):
             track.save()
             os.remove(filename)
         else:
-            r = requests.post('https://api.telegram.org/bot%s/sendAudio'%settings.BOT_TOKEN, data={"duration":300,"chat_id":chat_id, 'performer':track.artist, 'title':track.title, 'audio':track.telegram_id})
+            r = requests.post('https://api.telegram.org/bot%s/sendAudio'%settings.BOT_TOKEN, data={"duration":track.duration,"chat_id":chat_id, 'performer':track.artist, 'title':track.title, 'audio':track.telegram_id})
             print r.content
 
 

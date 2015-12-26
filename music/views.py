@@ -114,6 +114,7 @@ def id_list(chat_id, id_list):
 
 def random_list(chat_id, size):
     tracks_list=Track.objects.raw("SELECT * FROM music_track ORDER BY RANDOM() LIMIT %d"%int(size))
+    print tracks_list.query
     for track in tracks_list:
         if track.telegram_id is None or track.telegram_id == "":
             import urllib

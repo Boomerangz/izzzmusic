@@ -38,10 +38,12 @@
       <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/music/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.70579493" vertical-offset="1923" max-vertical-offset="3344">
-              <caret line="109" column="31" selection-start-line="109" selection-start-column="31" selection-end-line="109" selection-end-column="31" />
+            <state vertical-scroll-proportion="0.44427934" vertical-offset="2407" max-vertical-offset="3872">
+              <caret line="123" column="47" selection-start-line="123" selection-start-column="47" selection-end-line="123" selection-end-column="47" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
+                <marker date="1451154796000" expanded="true" signature="3992:4041" placeholder="SELECT * FRO..music_track..." />
+                <marker date="1451154796000" expanded="true" signature="3992:4042" placeholder="SELECT * FRO..music_track..." />
               </folding>
             </state>
           </provider>
@@ -601,6 +603,8 @@
           <caret line="9" column="38" selection-start-line="9" selection-start-column="38" selection-end-line="9" selection-end-column="38" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
+            <marker date="1451154796000" expanded="true" signature="3992:4041" placeholder="SELECT * FRO..music_track..." />
+            <marker date="1451154796000" expanded="true" signature="3992:4042" placeholder="SELECT * FRO..music_track..." />
           </folding>
         </state>
       </provider>
@@ -689,6 +693,8 @@
           <caret line="9" column="38" selection-start-line="9" selection-start-column="38" selection-end-line="9" selection-end-column="38" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
+            <marker date="1451154796000" expanded="true" signature="3992:4041" placeholder="SELECT * FRO..music_track..." />
+            <marker date="1451154796000" expanded="true" signature="3992:4042" placeholder="SELECT * FRO..music_track..." />
           </folding>
         </state>
       </provider>
@@ -777,6 +783,8 @@
           <caret line="9" column="38" selection-start-line="9" selection-start-column="38" selection-end-line="9" selection-end-column="38" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
+            <marker date="1451154796000" expanded="true" signature="3992:4041" placeholder="SELECT * FRO..music_track..." />
+            <marker date="1451154796000" expanded="true" signature="3992:4042" placeholder="SELECT * FRO..music_track..." />
           </folding>
         </state>
       </provider>
@@ -995,10 +1003,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/music/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.70579493" vertical-offset="1923" max-vertical-offset="3344">
-          <caret line="109" column="31" selection-start-line="109" selection-start-column="31" selection-end-line="109" selection-end-column="31" />
+        <state vertical-scroll-proportion="0.44427934" vertical-offset="2407" max-vertical-offset="3872">
+          <caret line="123" column="47" selection-start-line="123" selection-start-column="47" selection-end-line="123" selection-end-column="47" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
+            <marker date="1451154796000" expanded="true" signature="3992:4041" placeholder="SELECT * FRO..music_track..." />
+            <marker date="1451154796000" expanded="true" signature="3992:4042" placeholder="SELECT * FRO..music_track..." />
           </folding>
         </state>
       </provider>

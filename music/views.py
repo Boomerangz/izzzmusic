@@ -112,6 +112,26 @@ def id_list(chat_id, id_list):
             r = requests.post('https://api.telegram.org/bot%s/sendAudio'%settings.BOT_TOKEN, data={"duration":track.duration,"chat_id":chat_id, 'performer':track.artist, 'title':track.title, 'audio':track.telegram_id})
             print r.content
 
+def random_list(chat_id, size):
+    tracks_list=Track.objects.raw("SELECT * FROM music_track ORDER BY RANDOM() LIMIT %d"%int(size))
+    for track in tracks_list:
+        if track.telegram_id is None or track.telegram_id == "":
+            import urllib
+            testfile = urllib.URLopener()
+            path = temp_file_name()
+            testfile.retrieve(track.link, path)
+            filename=path
+            r = requests.post('https://api.telegram.org/bot%s/sendAudio'%settings.BOT_TOKEN, files={'audio': open(filename, 'rb')}, data={"duration":300,"chat_id":chat_id, 'performer':track.artist, 'title':track.title})
+            print r.content
+            r_js = json.loads(r.content)
+            f_id = r_js["result"]["audio"]["file_id"]
+            track.telegram_id = f_id
+            track.save()
+            os.remove(filename)
+        else:
+            r = requests.post('https://api.telegram.org/bot%s/sendAudio'%settings.BOT_TOKEN, data={"duration":track.duration,"chat_id":chat_id, 'performer':track.artist, 'title':track.title, 'audio':track.telegram_id})
+            print r.content
+
 
 
 # {"update_id":202480832,
@@ -133,6 +153,10 @@ def income_message(request):
                     if text_list[0]=="/id":
                         print "/id"
                         id_list(chat_id, text_list[1:])
+                    elif text_list[0]=="/random":
+                        print "/random"
+                        size = int(text_list[1]) if len(text_list)>1 else 10
+                        random_list(chat_id, size)
                 else:
                     plain_text(chat_id, text)
             except Exception as e:

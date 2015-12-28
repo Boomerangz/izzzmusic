@@ -112,8 +112,9 @@ def id_list(chat_id, id_list):
             r = requests.post('https://api.telegram.org/bot%s/sendAudio'%settings.BOT_TOKEN, data={"duration":track.duration,"chat_id":chat_id, 'performer':track.artist, 'title':track.title, 'audio':track.telegram_id})
             print r.content
 
-def random_list(chat_id, size):
-    tracks_list=Track.objects.raw("SELECT * FROM music_track ORDER BY RANDOM() LIMIT %d"%int(size))
+def random_list(chat_id, size, search_list):
+    search_str = 'WHERE "%'+'%" AND artist||album||title LIKE "%'.join(search_list)+'%"' if len(search_list)>0 else ''
+    tracks_list=Track.objects.raw("SELECT * FROM music_track %s ORDER BY RANDOM() LIMIT %d"%(search_str,int(size)))
     print tracks_list.query
     for track in tracks_list:
         if track.telegram_id is None or track.telegram_id == "":
@@ -157,7 +158,8 @@ def income_message(request):
                     elif text_list[0]=="/random":
                         print "/random"
                         size = int(text_list[1]) if len(text_list)>1 else 10
-                        random_list(chat_id, size)
+                        search_list = text_list[2:] if len(text_list)>2 else []
+                        random_list(chat_id, size, search_list)
                 else:
                     plain_text(chat_id, text)
             except Exception as e:

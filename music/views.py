@@ -89,7 +89,7 @@ def plain_text(chat_id, text):
         track_strs = ["%d %s %s"%(t.id, t.artist,t.title) for t in tracks]
         tracks_string = "\n".join(track_strs)
         r = requests.post('https://api.telegram.org/bot%s/sendMessage'%settings.BOT_TOKEN, data={"chat_id":chat_id, 'text':tracks_string})
-        print r.body
+        print r.content
 
 
 def id_list(chat_id, id_list):
@@ -113,7 +113,8 @@ def id_list(chat_id, id_list):
             print r.content
 
 def random_list(chat_id, size, search_list):
-    search_str = 'WHERE "%'+'%" AND artist||album||title LIKE "%'.join(search_list)+'%"' if len(search_list)>0 else ''
+#    search_str = 'WHERE artist||album||title LIKE "%%'+'green%%"'#'.join(search_list)+'\%"' if len(search_list)>0 else ''
+    search_str = 'WHERE artist||album||title LIKE "%%'+'%%" AND artist||album||title LIKE "%%'.join(search_list)+'%%"' if len(search_list)>0 else ''
     tracks_list=Track.objects.raw("SELECT * FROM music_track %s ORDER BY RANDOM() LIMIT %d"%(search_str,int(size)))
     print tracks_list.query
     for track in tracks_list:

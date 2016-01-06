@@ -6,6 +6,9 @@ __author__ = 'igorzygin'
 
 
 class Track(models.Model):
+    class Meta:
+     ordering = ['?']
+	
     artist = models.CharField(max_length=255, default="", blank=True)
     album = models.CharField(max_length=255, default="", blank=True)
     title = models.CharField(max_length=255, default="", blank=True)

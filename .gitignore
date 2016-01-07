@@ -4,3 +4,5 @@ media/
 db.sqlite3
 nohup.out
 mymusic/s3_settings.py
+static_root/
+

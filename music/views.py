@@ -143,11 +143,14 @@ def income_message(request):
         if request.method=='POST':
             print "POST"
             print request.body
-            body = json.loads(request.body)
+	    text = unicode(request.body)#.encode('utf8')
+	    print text
+            body = json.loads(text)
+	    print body
             chat_id = body["message"]["chat"]["id"]
             response = {}
             try:
-                text = body["message"]["text"]
+                text = body["message"]["text"].encode('utf8')
                 print text
                 text_list = text.split(" ")
                 print text_list

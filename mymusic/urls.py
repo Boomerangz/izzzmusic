@@ -3,6 +3,8 @@ from django.contrib import admin
 from music.views import MusicView, add_audio, income_message
 
 from django.conf.urls.static import static
+from django.contrib.auth import views as auth_views
+
 from mymusic import settings
 
 urlpatterns = patterns('',
@@ -10,6 +12,7 @@ urlpatterns = patterns('',
     # url(r'^$', 'mymusic.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
 
+    url(r'^accounts/login/$', auth_views.login),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^upload/', add_audio),
     url(r'^message/', income_message),
@@ -18,4 +21,5 @@ urlpatterns = patterns('',
 
 
 
-) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

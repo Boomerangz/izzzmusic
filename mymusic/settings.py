@@ -110,8 +110,9 @@ MEDIA_URL = '/media/'
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
-    os.path.join(BASE_DIR, "platform","static"),
 ]
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
 
 # Frontend widget values
 # 0-Keep original, 1-Mono, 2-Stereo
